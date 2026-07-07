@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Masuk sebagai Pemohon - Sistem Permohonan Stok</title>
+<meta charset="UTF-8">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#fffbeb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --kuning:#facc15;
+    --kuning-dark:#ca8a04;
+    --biru:#2563eb;
+    --bayang:0 10px 25px rgba(0,0,0,0.08);
+}
+
+body{
+    margin:0;
+    font-family:Inter, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.card{
+    background:var(--card);
+    padding:32px;
+    border-radius:14px;
+    box-shadow:var(--bayang);
+    width:100%;
+    max-width:380px;
+    border-top:6px solid var(--kuning);
+}
+
+.badge{
+    display:inline-block;
+    background:#fef9c3;
+    color:var(--kuning-dark);
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+}
+
+h2{
+    margin-top:0;
+}
+
+p.sub{
+    color:#777;
+    font-size:14px;
+    margin-top:-8px;
+}
+
+label{
+    display:block;
+    margin-top:14px;
+    font-size:14px;
+    font-weight:600;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    box-sizing:border-box;
+    font-family:inherit;
+}
+
+input:focus{
+    outline:none;
+    border-color:var(--kuning);
+}
+
+button.submit{
+    margin-top:22px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:var(--kuning);
+    color:#4a3c00;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+}
+
+button.submit:hover{ opacity:0.9; }
+
+#msg{
+    margin-top:14px;
+    font-size:13px;
+    text-align:center;
+    color:#ef4444;
+}
+
+.footer-link{
+    margin-top:20px;
+    font-size:13px;
+    text-align:center;
+    color:#888;
+}
+
+.footer-link a{
+    color:var(--biru);
+    text-decoration:none;
+    font-weight:600;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<span class="badge">PEMOHON / GUEST</span>
+<h2>Masuk sebagai Pemohon</h2>
+<p class="sub">Tiada perlu kata laluan — masukkan nama anda sahaja.</p>
+
+<label>Nama Penuh</label>
+<input id="nama_penuh" placeholder="Nama penuh anda">
+
+<label>Jawatan</label>
+<input id="jawatan" placeholder="Contoh: Kerani, Pelajar Praktikal">
+
+<button class="submit" onclick="masuk()">Masuk</button>
+
+<div id="msg"></div>
+
+<div class="footer-link">
+    Anda seorang pegawai? <a href="login-pegawai.html">Log masuk di sini</a>
+</div>
+
+</div>
+
+<script>
+
+const API = "http://127.0.0.1:5000";
+
+async function masuk(){
+
+    let nama_penuh = document.getElementById("nama_penuh").value.trim();
+    let jawatan = document.getElementById("jawatan").value.trim();
+
+    if(!nama_penuh){
+        document.getElementById("msg").innerText = "Sila isi nama anda.";
+        return;
+    }
+
+    try{
+        let res = await fetch(API+"/guest-login", {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            credentials:"include",
+            body:JSON.stringify({ nama_penuh, jawatan })
+        });
+
+        let data = await res.json();
+
+        if(!res.ok){
+            document.getElementById("msg").innerText = data.message || "Gagal masuk.";
+            return;
+        }
+
+        window.location.href = "permohonan.html";
+
+    } catch(err){
+        document.getElementById("msg").innerText = "Ralat sambungan ke server: " + err.message;
+        console.error(err);
+    }
+}
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Enter") masuk();
+});
+
+</script>
+
+</body>
+</html>

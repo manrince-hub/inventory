@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<!-- VERSION: v4-edit-delete -->
+<html lang="ms">
+<head>
+<title>Permohonan Stok — PKPJ</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --navy:#0f172a;
+    --navy-light:#1e293b;
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --kuning:#facc15;
+    --kuning-deep:#ca8a04;
+    --biru:#2563eb;
+    --biru-deep:#1d4ed8;
+    --merah:#ef4444;
+    --hijau:#22c55e;
+    --bayang:0 10px 25px rgba(0,0,0,0.08);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    font-family:Inter, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:230px;
+    flex-shrink:0;
+    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+    color:white;
+    padding:24px 16px;
+    display:flex;
+    flex-direction:column;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 8px;
+    margin-bottom:36px;
+}
+
+.brand .dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--kuning);
+    box-shadow:0 0 0 4px rgba(250,204,21,0.2);
+}
+
+.brand span{
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:0.02em;
+}
+
+.nav-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#64748b;
+    padding:0 8px;
+    margin-bottom:8px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:28px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#cbd5e1;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    padding:10px 12px;
+    border-radius:10px;
+    transition:background 0.15s ease, color 0.15s ease;
+}
+
+.nav a svg{ flex-shrink:0; opacity:0.85; }
+
+.nav a:hover{
+    background:rgba(255,255,255,0.06);
+    color:white;
+}
+
+.nav a.active{
+    background:var(--kuning);
+    color:#453800;
+}
+
+.nav a.active svg{ opacity:1; }
+
+.sidebar-footer{
+    margin-top:auto;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.logout-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    background:none;
+    border:none;
+    color:#fca5a5;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.logout-btn:hover{ background:rgba(239,68,68,0.12); }
+
+.user-badge{ position:relative; }
+
+.logout-icon-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    border:none;
+    background:#fee2e2;
+    color:#ef4444;
+    cursor:pointer;
+    flex-shrink:0;
+    margin-left:2px;
+    transition:background 0.15s ease;
+}
+
+.logout-icon-btn:hover{ background:#fecaca; }
+
+
+/* ================= MAIN ================= */
+
+.main{
+    flex:1;
+    padding:28px 36px 60px;
+    max-width:1200px;
+    margin:0 auto;
+    width:100%;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.page-title h1{
+    font-size:22px;
+    margin:0 0 4px;
+    font-weight:800;
+}
+
+.page-title p{
+    margin:0;
+    font-size:13.5px;
+    color:var(--muted);
+}
+
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border-radius:14px;
+    padding:8px 16px 8px 8px;
+    box-shadow:var(--bayang);
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--kuning), var(--kuning-deep));
+    color:#453800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    flex-shrink:0;
+}
+
+.user-meta{ line-height:1.3; }
+
+.user-meta .nama{
+    font-size:13.5px;
+    font-weight:700;
+}
+
+.user-meta .jawatan{
+    font-size:11.5px;
+    color:var(--muted);
+}
+
+/* ================= CARD / FORM ================= */
+
+.card{
+    background:var(--card);
+    padding:26px;
+    border-radius:16px;
+    box-shadow:var(--bayang);
+    margin-bottom:24px;
+}
+
+.card h3{
+    margin:0 0 4px;
+    font-size:17px;
+}
+
+.card .sub{
+    font-size:13px;
+    color:var(--muted);
+    margin:0 0 18px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.full{ grid-column:1 / -1; }
+
+.section-divider{
+    margin:24px 0 14px;
+    padding-top:18px;
+    border-top:1px dashed #e2e5ec;
+}
+
+.section-divider h4{
+    margin:0 0 2px;
+    font-size:14px;
+    font-weight:700;
+    color:var(--kuning-deep);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+}
+
+.section-divider .sub{ margin:0; }
+
+input[readonly]{
+    background:#f8fafc;
+    color:var(--text);
+    font-weight:700;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-size:13px;
+    font-weight:600;
+}
+
+input{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid #e2e5ec;
+    box-sizing:border-box;
+    font-family:inherit;
+    font-size:14px;
+}
+
+input:focus{
+    outline:none;
+    border-color:var(--biru);
+    box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+}
+
+button.submit{
+    margin-top:18px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:var(--biru);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14.5px;
+    transition:background 0.15s ease;
+}
+
+button.submit:hover{ background:var(--biru-deep); }
+
+#msg{
+    margin-top:12px;
+    font-size:13.5px;
+    font-weight:600;
+}
+
+/* ================= TABLE ================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+}
+
+th{
+    background:var(--kuning);
+    color:#453800;
+    padding:10px 12px;
+    text-align:left;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+}
+
+th:first-child{ border-radius:8px 0 0 8px; }
+th:last-child{ border-radius:0 8px 8px 0; }
+
+td{
+    padding:12px;
+    border-bottom:1px solid #f1f5f9;
+}
+
+tr:last-child td{ border-bottom:none; }
+
+.status{
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.status-PENDING{ background:#fef3c7; color:#92400e; }
+.status-DILULUSKAN{ background:#dbeafe; color:#1e40af; }
+.status-DITOLAK{ background:#fee2e2; color:#991b1b; }
+.status-DIKEMASKINI{ background:#e0e7ff; color:#3730a3; }
+.status-DITERIMA{ background:#dcfce7; color:#166534; }
+
+.kosong{
+    text-align:center;
+    color:#9ca3af;
+    padding:30px;
+    font-size:13.5px;
+}
+
+.filter-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+}
+
+.filter-row input{
+    flex:1;
+    min-width:200px;
+}
+
+.filter-row select{
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid #e2e5ec;
+    font-family:inherit;
+    font-size:14px;
+    background:white;
+}
+
+.btn-print{
+    background:none;
+    border:1px solid #e2e5ec;
+    border-radius:8px;
+    padding:6px 10px;
+    cursor:pointer;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.btn-print:hover{ background:#f1f5f9; color:var(--text); }
+
+.action-cell{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.btn-edit{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:8px;
+    padding:6px 10px;
+    cursor:pointer;
+    color:var(--biru-deep);
+    font-size:12px;
+    font-weight:600;
+}
+
+.btn-edit:hover{ background:#dbeafe; }
+
+.btn-delete{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    border-radius:8px;
+    padding:6px 10px;
+    cursor:pointer;
+    color:#b91c1c;
+    font-size:12px;
+    font-weight:600;
+}
+
+.btn-delete:hover{ background:#fee2e2; }
+
+@media print{
+    .sidebar, .topbar, .filter-row, th:last-child, td:last-child, #cetakArea .card:first-of-type{ display:none !important; }
+    body{ display:block; }
+    .main{ padding:0; max-width:100%; }
+}
+
+.thumb{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    object-fit:cover;
+    display:block;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.thumb-placeholder{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    background:#f1f5f9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#c4c9d4;
+}
+
+.file-input-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.file-preview{
+    width:52px;
+    height:52px;
+    border-radius:10px;
+    object-fit:cover;
+    display:none;
+    box-shadow:0 2px 8px rgba(0,0,0,0.12);
+}
+
+input[type="file"]{
+    padding:9px 10px;
+    font-size:13px;
+}
+
+/* ================= MODAL EDIT ================= */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,0.5);
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+}
+
+.modal-overlay.open{ display:flex; }
+
+.modal-box{
+    background:var(--card);
+    border-radius:16px;
+    padding:26px;
+    max-width:640px;
+    width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+}
+
+.modal-box h3{
+    margin:0 0 4px;
+    font-size:17px;
+}
+
+.modal-box .sub{
+    font-size:13px;
+    color:var(--muted);
+    margin:0 0 18px;
+}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.modal-actions button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.btn-simpan{ background:var(--biru); color:white; }
+.btn-simpan:hover{ background:var(--biru-deep); }
+
+.btn-batal{ background:#f1f5f9; color:var(--text); }
+.btn-batal:hover{ background:#e2e8f0; }
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px){
+    body{ flex-direction:column; }
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+        flex-direction:row;
+        align-items:center;
+        padding:14px 16px;
+        gap:16px;
+        overflow-x:auto;
+    }
+    .brand{ margin-bottom:0; }
+    .nav-label{ display:none; }
+    .nav{ flex-direction:row; margin-bottom:0; }
+    .sidebar-footer{ display:none; }
+    .main{ padding:20px 16px 40px; }
+    .form-grid{ grid-template-columns:1fr; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+
+    <div class="brand">
+        <span class="dot"></span>
+        <span>PKPJ SISTEM</span>
+    </div>
+
+    <div class="nav-label">Menu</div>
+    <div class="nav">
+        <a href="dashboard.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/></svg>
+            Dashboard
+        </a>
+        <a href="index.html" onclick="return confirm('Adakah anda pasti mahu ke Utama? Anda akan meninggalkan halaman ini.')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-7 8 7M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Utama
+        </a>
+        <a href="permohonan.html" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l2 4H7l2-4zM5 7h14l-1 13a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Permohonan
+        </a>
+        <a href="kelulusan.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kelulusan
+        </a>
+        <a href="kemaskini.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 3M12 3a9 9 0 100 18 9 9 0 000-18z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kemaskini
+        </a>
+        <a href="penerimaan.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 7l-9 9-5-5M4 4h16v16H4z" stroke="currentColor" stroke-width="0" fill="none"/><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Penerimaan
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="logout-btn" onclick="doLogout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Log Keluar
+        </button>
+    </div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+
+    <div class="topbar">
+        <div class="page-title">
+            <h1>Borang Permohonan Stok</h1>
+            <p>Isi maklumat item dan kuantiti yang diperlukan.</p>
+        </div>
+
+        <div class="user-badge">
+            <div class="avatar" id="avatar">?</div>
+            <div class="user-meta">
+                <div class="nama" id="userNama">Memuatkan...</div>
+                <div class="jawatan" id="userJawatan">—</div>
+            </div>
+            <button class="logout-icon-btn" onclick="doLogout()" title="Log Keluar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Maklumat Permohonan</h3>
+        <p class="sub">Semua permohonan akan direkodkan atas nama anda secara automatik.</p>
+
+        <div class="form-grid">
+            <div class="full">
+                <label>Nama Item Stok</label>
+                <input id="item_name" placeholder="Contoh: Kertas A4">
+            </div>
+
+            <div>
+                <label>Kuantiti Dipesan</label>
+                <input id="qty_dipesan" type="number" placeholder="Contoh: 10" oninput="kiraAmaun()">
+            </div>
+
+            <div>
+                <label>Tarikh</label>
+                <input id="pemohon_tarikh" type="date">
+            </div>
+
+            <div class="full">
+                <label>Gambar Item (pilihan)</label>
+                <div class="file-input-wrap">
+                    <input id="gambar" type="file" accept="image/*" onchange="previewGambar(event)">
+                    <img id="preview" class="file-preview" alt="Pratonton gambar">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h4>Kod Dipertanggung</h4>
+            <p class="sub">Maklumat kod akaun bagi permohonan ini.</p>
+        </div>
+
+        <div class="form-grid">
+            <div>
+                <label>Kod Pegawai Pengawal</label>
+                <input id="kod_pegawai_pengawal" placeholder="Contoh: 004000">
+            </div>
+            <div>
+                <label>Kump. PTJ & PTJ</label>
+                <input id="kump_ptj" placeholder="Contoh: 14100800">
+            </div>
+            <div>
+                <label>Vot / Dana</label>
+                <input id="vot_dana" placeholder="Contoh: E009">
+            </div>
+            <div>
+                <label>CP</label>
+                <input id="cp" placeholder="Contoh: CP01">
+            </div>
+            <div>
+                <label>Program / Aktiviti</label>
+                <input id="program_aktiviti" placeholder="Program / Aktiviti">
+            </div>
+            <div>
+                <label>Projek</label>
+                <input id="projek" placeholder="Projek">
+            </div>
+            <div>
+                <label>Setia</label>
+                <input id="setia" placeholder="Setia">
+            </div>
+            <div>
+                <label>Sub Setia</label>
+                <input id="sub_setia" placeholder="Sub Setia">
+            </div>
+            <div>
+                <label>Kod Akaun</label>
+                <input id="kod_akaun" placeholder="Contoh: A1435501">
+            </div>
+            <div>
+                <label>Kod Item</label>
+                <input id="kod_item" placeholder="Contoh: 3550199999901000013">
+            </div>
+            <div>
+                <label>Harga Seunit (RM)</label>
+                <input id="harga_seunit" type="number" step="0.01" placeholder="Contoh: 11950.00" oninput="kiraAmaun()">
+            </div>
+            <div>
+                <label>Amaun (RM)</label>
+                <input id="amaun" type="text" placeholder="0.00" readonly>
+            </div>
+        </div>
+
+        <button class="submit" onclick="hantarPermohonan()">Hantar Permohonan</button>
+        <div id="msg"></div>
+    </div>
+
+    <div class="card">
+        <h3>Senarai Permohonan</h3>
+        <p class="sub">Status terkini semua permohonan dalam sistem.</p>
+
+        <div class="filter-row">
+            <input id="searchInput" placeholder="Cari nama item atau pemohon..." oninput="applyFilter()">
+            <select id="statusFilter" onchange="applyFilter()">
+                <option value="">Semua Status</option>
+                <option value="PENDING">Pending</option>
+                <option value="DILULUSKAN">Diluluskan</option>
+                <option value="DITOLAK">Ditolak</option>
+                <option value="DIKEMASKINI">Dikemaskini</option>
+                <option value="DITERIMA">Diterima</option>
+            </select>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Gambar</th>
+                    <th>ID</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Pemohon</th>
+                    <th>Status</th>
+                    <th>Resit</th>
+                    <th>Tindakan</th>
+                </tr>
+            </thead>
+            <tbody id="list"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- ================= MODAL EDIT ================= -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <h3>Edit Permohonan</h3>
+        <p class="sub">Kemaskini maklumat permohonan ini.</p>
+
+        <input type="hidden" id="edit_id">
+
+        <div class="form-grid">
+            <div class="full">
+                <label>Nama Item Stok</label>
+                <input id="edit_item_name">
+            </div>
+            <div>
+                <label>Kuantiti Dipesan</label>
+                <input id="edit_qty_dipesan" type="number" oninput="kiraAmaunEdit()">
+            </div>
+            <div>
+                <label>Tarikh</label>
+                <input id="edit_pemohon_tarikh" type="date">
+            </div>
+            <div>
+                <label>Kod Pegawai Pengawal</label>
+                <input id="edit_kod_pegawai_pengawal">
+            </div>
+            <div>
+                <label>Kump. PTJ & PTJ</label>
+                <input id="edit_kump_ptj">
+            </div>
+            <div>
+                <label>Vot / Dana</label>
+                <input id="edit_vot_dana">
+            </div>
+            <div>
+                <label>CP</label>
+                <input id="edit_cp">
+            </div>
+            <div>
+                <label>Program / Aktiviti</label>
+                <input id="edit_program_aktiviti">
+            </div>
+            <div>
+                <label>Projek</label>
+                <input id="edit_projek">
+            </div>
+            <div>
+                <label>Setia</label>
+                <input id="edit_setia">
+            </div>
+            <div>
+                <label>Sub Setia</label>
+                <input id="edit_sub_setia">
+            </div>
+            <div>
+                <label>Kod Akaun</label>
+                <input id="edit_kod_akaun">
+            </div>
+            <div>
+                <label>Kod Item</label>
+                <input id="edit_kod_item">
+            </div>
+            <div>
+                <label>Harga Seunit (RM)</label>
+                <input id="edit_harga_seunit" type="number" step="0.01" oninput="kiraAmaunEdit()">
+            </div>
+            <div>
+                <label>Amaun (RM)</label>
+                <input id="edit_amaun" type="text" readonly>
+            </div>
+        </div>
+
+        <div id="editMsg" style="margin-top:10px; font-size:13.5px; font-weight:600;"></div>
+
+        <div class="modal-actions">
+            <button class="btn-batal" onclick="closeEditModal()">Batal</button>
+            <button class="btn-simpan" onclick="simpanEdit()">Simpan Perubahan</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const API = "http://127.0.0.1:5000";
+
+function initials(nama){
+    if(!nama) return "?";
+    let parts = nama.trim().split(" ");
+    if(parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+async function checkAuth(){
+    try{
+        let res = await fetch(API+"/me", { credentials:"include" });
+        if(!res.ok){
+            window.location.href = "index.html";
+            return;
+        }
+        let data = await res.json();
+        document.getElementById("userNama").innerText = data.nama_penuh;
+        document.getElementById("userJawatan").innerText = data.jawatan;
+        document.getElementById("avatar").innerText = initials(data.nama_penuh);
+    } catch(err){
+        window.location.href = "index.html";
+    }
+}
+
+async function doLogout(){
+    if(!confirm("Adakah anda pasti mahu log keluar?")) return;
+    await fetch(API+"/logout", { method:"POST", credentials:"include" });
+    window.location.href = "index.html";
+}
+
+function previewGambar(event){
+    let file = event.target.files[0];
+    let preview = document.getElementById("preview");
+    if(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    } else {
+        preview.style.display = "none";
+    }
+}
+
+function kiraAmaun(){
+    let qty = parseFloat(document.getElementById("qty_dipesan").value) || 0;
+    let harga = parseFloat(document.getElementById("harga_seunit").value) || 0;
+    let amaun = qty * harga;
+    document.getElementById("amaun").value = amaun.toFixed(2);
+}
+
+function kiraAmaunEdit(){
+    let qty = parseFloat(document.getElementById("edit_qty_dipesan").value) || 0;
+    let harga = parseFloat(document.getElementById("edit_harga_seunit").value) || 0;
+    let amaun = qty * harga;
+    document.getElementById("edit_amaun").value = amaun.toFixed(2);
+}
+
+async function hantarPermohonan(){
+
+    let item_name = document.getElementById("item_name").value;
+    let qty_dipesan = document.getElementById("qty_dipesan").value;
+    let pemohon_tarikh = document.getElementById("pemohon_tarikh").value;
+    let gambarFile = document.getElementById("gambar").files[0];
+
+    if(!item_name || !qty_dipesan){
+        document.getElementById("msg").innerText = "Sila isi semua ruangan.";
+        document.getElementById("msg").style.color = "var(--merah)";
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("item_name", item_name);
+    formData.append("qty_dipesan", qty_dipesan);
+    formData.append("pemohon_tarikh", pemohon_tarikh);
+    formData.append("kod_pegawai_pengawal", document.getElementById("kod_pegawai_pengawal").value);
+    formData.append("kump_ptj", document.getElementById("kump_ptj").value);
+    formData.append("vot_dana", document.getElementById("vot_dana").value);
+    formData.append("cp", document.getElementById("cp").value);
+    formData.append("program_aktiviti", document.getElementById("program_aktiviti").value);
+    formData.append("projek", document.getElementById("projek").value);
+    formData.append("setia", document.getElementById("setia").value);
+    formData.append("sub_setia", document.getElementById("sub_setia").value);
+    formData.append("kod_akaun", document.getElementById("kod_akaun").value);
+    formData.append("kod_item", document.getElementById("kod_item").value);
+    formData.append("harga_seunit", document.getElementById("harga_seunit").value);
+    if(gambarFile){
+        formData.append("gambar", gambarFile);
+    }
+
+    try{
+        let res = await fetch(API+"/permohonan", {
+            method:"POST",
+            credentials:"include",
+            body: formData
+        });
+
+        if(!res.ok){
+            document.getElementById("msg").innerText = "Gagal hantar. Status: " + res.status;
+            document.getElementById("msg").style.color = "#ef4444";
+            return;
+        }
+
+        document.getElementById("msg").innerText = "Permohonan berjaya dihantar!";
+        document.getElementById("msg").style.color = "#16a34a";
+        clearForm();
+        load();
+
+    } catch(err){
+        document.getElementById("msg").innerText = "Ralat sambungan ke server: " + err.message;
+        document.getElementById("msg").style.color = "#ef4444";
+        console.error(err);
+    }
+}
+
+function clearForm(){
+    document.getElementById("item_name").value = "";
+    document.getElementById("qty_dipesan").value = "";
+    document.getElementById("pemohon_tarikh").value = "";
+    document.getElementById("gambar").value = "";
+    document.getElementById("preview").style.display = "none";
+    document.getElementById("kod_pegawai_pengawal").value = "";
+    document.getElementById("kump_ptj").value = "";
+    document.getElementById("vot_dana").value = "";
+    document.getElementById("cp").value = "";
+    document.getElementById("program_aktiviti").value = "";
+    document.getElementById("projek").value = "";
+    document.getElementById("setia").value = "";
+    document.getElementById("sub_setia").value = "";
+    document.getElementById("kod_akaun").value = "";
+    document.getElementById("kod_item").value = "";
+    document.getElementById("harga_seunit").value = "";
+    document.getElementById("amaun").value = "";
+}
+
+let allData = [];
+
+async function load(){
+    try{
+        let res = await fetch(API+"/senarai", { credentials:"include" });
+        if(!res.ok) return;
+        allData = await res.json();
+        applyFilter();
+    } catch(err){
+        console.error(err);
+    }
+}
+
+function applyFilter(){
+    let keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+    let status = document.getElementById("statusFilter").value;
+
+    let filtered = allData.filter(d=>{
+        let matchKeyword = !keyword ||
+            (d.item_name && d.item_name.toLowerCase().includes(keyword)) ||
+            (d.pemohon_nama && d.pemohon_nama.toLowerCase().includes(keyword));
+        let matchStatus = !status || d.status === status;
+        return matchKeyword && matchStatus;
+    });
+
+    renderTable(filtered);
+}
+
+function cetakResit(id){
+    let d = allData.find(x => x.id === id);
+    if(!d) return;
+
+    let win = window.open("", "_blank");
+    win.document.write(`
+        <title>Resit Permohonan #${d.id}</title>
+        <style>
+            body{ font-family:Arial, sans-serif; padding:40px; color:#0f172a; }
+            h2{ border-bottom:2px solid #facc15; padding-bottom:10px; }
+            table{ width:100%; border-collapse:collapse; margin-top:20px; }
+            td{ padding:8px 4px; border-bottom:1px solid #eee; font-size:14px; }
+            td:first-child{ font-weight:bold; width:220px; color:#555; }
+        </style>
+        <h2>Resit Permohonan Stok #${d.id}</h2>
+        <table>
+            <tr><td>Nama Item</td><td>${d.item_name}</td></tr>
+            <tr><td>Kuantiti Dipesan</td><td>${d.qty_dipesan}</td></tr>
+            <tr><td>Dipohon Oleh</td><td>${d.pemohon_nama} (${d.pemohon_jawatan})</td></tr>
+            <tr><td>Tarikh Pemohonan</td><td>${d.pemohon_tarikh || "-"}</td></tr>
+            <tr><td>Kod Pegawai Pengawal</td><td>${d.kod_pegawai_pengawal || "-"}</td></tr>
+            <tr><td>Kump. PTJ & PTJ</td><td>${d.kump_ptj || "-"}</td></tr>
+            <tr><td>Vot / Dana</td><td>${d.vot_dana || "-"}</td></tr>
+            <tr><td>Kod Akaun</td><td>${d.kod_akaun || "-"}</td></tr>
+            <tr><td>Kod Item</td><td>${d.kod_item || "-"}</td></tr>
+            <tr><td>Harga Seunit (RM)</td><td>${d.harga_seunit != null ? Number(d.harga_seunit).toFixed(2) : "-"}</td></tr>
+            <tr><td>Amaun (RM)</td><td>${d.amaun != null ? Number(d.amaun).toFixed(2) : "-"}</td></tr>
+            <tr><td>Status Semasa</td><td>${d.status}</td></tr>
+            <tr><td>Kuantiti Diluluskan</td><td>${d.qty_diluluskan ?? "-"}</td></tr>
+            <tr><td>Diluluskan Oleh</td><td>${d.pelulus_nama ? d.pelulus_nama + " (" + d.pelulus_jawatan + ")" : "-"}</td></tr>
+            <tr><td>Catatan</td><td>${d.catatan || "-"}</td></tr>
+        </table>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
+}
+
+function openEditModal(id){
+    let d = allData.find(x => x.id === id);
+    if(!d) return;
+
+    document.getElementById("edit_id").value = d.id;
+    document.getElementById("edit_item_name").value = d.item_name || "";
+    document.getElementById("edit_qty_dipesan").value = d.qty_dipesan || "";
+    document.getElementById("edit_pemohon_tarikh").value = d.pemohon_tarikh || "";
+    document.getElementById("edit_kod_pegawai_pengawal").value = d.kod_pegawai_pengawal || "";
+    document.getElementById("edit_kump_ptj").value = d.kump_ptj || "";
+    document.getElementById("edit_vot_dana").value = d.vot_dana || "";
+    document.getElementById("edit_cp").value = d.cp || "";
+    document.getElementById("edit_program_aktiviti").value = d.program_aktiviti || "";
+    document.getElementById("edit_projek").value = d.projek || "";
+    document.getElementById("edit_setia").value = d.setia || "";
+    document.getElementById("edit_sub_setia").value = d.sub_setia || "";
+    document.getElementById("edit_kod_akaun").value = d.kod_akaun || "";
+    document.getElementById("edit_kod_item").value = d.kod_item || "";
+    document.getElementById("edit_harga_seunit").value = d.harga_seunit || "";
+    document.getElementById("edit_amaun").value = d.amaun != null ? Number(d.amaun).toFixed(2) : "0.00";
+    document.getElementById("editMsg").innerText = "";
+
+    document.getElementById("editModal").classList.add("open");
+}
+
+function closeEditModal(){
+    document.getElementById("editModal").classList.remove("open");
+}
+
+async function simpanEdit(){
+    let id = document.getElementById("edit_id").value;
+    let item_name = document.getElementById("edit_item_name").value;
+    let qty_dipesan = document.getElementById("edit_qty_dipesan").value;
+
+    if(!item_name || !qty_dipesan){
+        document.getElementById("editMsg").innerText = "Sila isi semua ruangan wajib.";
+        document.getElementById("editMsg").style.color = "var(--merah)";
+        return;
+    }
+
+    let payload = {
+        item_name: item_name,
+        qty_dipesan: qty_dipesan,
+        pemohon_tarikh: document.getElementById("edit_pemohon_tarikh").value,
+        kod_pegawai_pengawal: document.getElementById("edit_kod_pegawai_pengawal").value,
+        kump_ptj: document.getElementById("edit_kump_ptj").value,
+        vot_dana: document.getElementById("edit_vot_dana").value,
+        cp: document.getElementById("edit_cp").value,
+        program_aktiviti: document.getElementById("edit_program_aktiviti").value,
+        projek: document.getElementById("edit_projek").value,
+        setia: document.getElementById("edit_setia").value,
+        sub_setia: document.getElementById("edit_sub_setia").value,
+        kod_akaun: document.getElementById("edit_kod_akaun").value,
+        kod_item: document.getElementById("edit_kod_item").value,
+        harga_seunit: document.getElementById("edit_harga_seunit").value
+    };
+
+    try{
+        let res = await fetch(API+"/permohonan/"+id, {
+            method:"PUT",
+            credentials:"include",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if(!res.ok){
+            document.getElementById("editMsg").innerText = "Gagal simpan. Status: " + res.status;
+            document.getElementById("editMsg").style.color = "#ef4444";
+            return;
+        }
+
+        closeEditModal();
+        load();
+
+    } catch(err){
+        document.getElementById("editMsg").innerText = "Ralat sambungan ke server: " + err.message;
+        document.getElementById("editMsg").style.color = "#ef4444";
+        console.error(err);
+    }
+}
+
+async function padamPermohonan(id){
+    if(!confirm("Adakah anda pasti mahu memadam permohonan #" + id + "? Tindakan ini tidak boleh dibatalkan.")) return;
+
+    try{
+        let res = await fetch(API+"/permohonan/"+id, {
+            method:"DELETE",
+            credentials:"include"
+        });
+
+        if(!res.ok){
+            alert("Gagal memadam. Status: " + res.status);
+            return;
+        }
+
+        load();
+
+    } catch(err){
+        alert("Ralat sambungan ke server: " + err.message);
+        console.error(err);
+    }
+}
+
+function renderTable(data){
+
+    if(data.length === 0){
+        document.getElementById("list").innerHTML = `<tr><td colspan="8" class="kosong">Tiada permohonan sepadan.</td></tr>`;
+        return;
+    }
+
+    let html = "";
+
+    data.forEach(d=>{
+        let gambarHtml = d.gambar
+            ? `<img class="thumb" src="${API}/uploads/${d.gambar}" alt="${d.item_name}">`
+            : `<div class="thumb-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 16l4-4a2 2 0 012.8 0L15 16m-2-2l1.5-1.5a2 2 0 012.8 0L20 15M4 6h16v12H4V6z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+
+        html += `
+        <tr>
+            <td>${gambarHtml}</td>
+            <td>#${d.id}</td>
+            <td>${d.item_name}</td>
+            <td>${d.qty_dipesan}</td>
+            <td>${d.pemohon_nama}</td>
+            <td><span class="status status-${d.status}">${d.status}</span></td>
+            <td><button class="btn-print" onclick="cetakResit(${d.id})">Cetak</button></td>
+            <td>
+                <div class="action-cell">
+                    <button class="btn-edit" onclick="openEditModal(${d.id})">Edit</button>
+                    <button class="btn-delete" onclick="padamPermohonan(${d.id})">Padam</button>
+                </div>
+            </td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("list").innerHTML = html;
+}
+
+
+// ================= SESI TAMAT AUTOMATIK (tidak aktif) =================
+const HAD_TIDAK_AKTIF_MS = 15 * 60 * 1000; // 15 minit
+let masaTidakAktif;
+
+function tetapkanSemulaTimerSesi(){
+    clearTimeout(masaTidakAktif);
+    masaTidakAktif = setTimeout(async ()=>{
+        alert("Sesi anda telah tamat kerana tidak aktif. Sila log masuk semula.");
+        await fetch(API+"/logout", { method:"POST", credentials:"include" });
+        window.location.href = "index.html";
+    }, HAD_TIDAK_AKTIF_MS);
+}
+
+["click", "keydown", "mousemove", "scroll", "touchstart"].forEach(evt=>{
+    document.addEventListener(evt, tetapkanSemulaTimerSesi, { passive:true });
+});
+
+tetapkanSemulaTimerSesi();
+
+checkAuth();
+load();
+
+</script>
+
+</body>
+</html>

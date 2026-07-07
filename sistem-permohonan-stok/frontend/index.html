@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<title>Sistem Permohonan Stok — PKPJ</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --navy:#0f172a;
+    --navy-light:#1e293b;
+    --kuning:#facc15;
+    --kuning-deep:#ca8a04;
+    --biru:#2563eb;
+    --hijau:#22c55e;
+    --merah:#ef4444;
+    --paper:#f6f7fb;
+    --card:#ffffff;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --bayang:0 10px 30px rgba(15,23,42,0.08);
+    --bayang-lg:0 20px 45px rgba(15,23,42,0.16);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+}
+
+h1, h2, h3, .display{
+    font-family:'Sora', sans-serif;
+}
+
+a{ color:inherit; }
+
+:focus-visible{
+    outline:3px solid var(--kuning);
+    outline-offset:2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    position:relative;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(250,204,21,0.16), transparent 45%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+    color:white;
+    padding:56px 24px 90px;
+    overflow:hidden;
+}
+
+.hero::before{
+    /* halus - garisan kertas rasmi */
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(
+        transparent, transparent 27px, rgba(255,255,255,0.035) 28px
+    );
+    pointer-events:none;
+}
+
+.hero-inner{
+    max-width:1080px;
+    margin:0 auto;
+    position:relative;
+}
+
+.topline{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:48px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    font-size:15px;
+}
+
+.brand .dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--kuning);
+    box-shadow:0 0 0 4px rgba(250,204,21,0.2);
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.3fr 0.9fr;
+    gap:40px;
+    align-items:center;
+}
+
+.eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--kuning);
+    background:rgba(250,204,21,0.1);
+    border:1px solid rgba(250,204,21,0.25);
+    padding:6px 12px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:44px;
+    line-height:1.12;
+    margin:0 0 16px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+}
+
+.hero h1 em{
+    font-style:normal;
+    color:var(--kuning);
+}
+
+.hero p{
+    font-size:16px;
+    line-height:1.6;
+    color:#cbd5e1;
+    max-width:480px;
+    margin:0 0 28px;
+}
+
+.hero-cta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:14.5px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover{ transform:translateY(-2px); }
+
+.btn-primary{
+    background:var(--kuning);
+    color:#453800;
+    box-shadow:0 8px 20px rgba(250,204,21,0.25);
+}
+
+.btn-ghost{
+    background:rgba(255,255,255,0.08);
+    color:white;
+    border:1px solid rgba(255,255,255,0.18);
+}
+
+/* SEAL - elemen tandatangan unik */
+.seal-wrap{
+    display:flex;
+    justify-content:center;
+}
+
+.seal{
+    width:220px;
+    height:220px;
+    position:relative;
+}
+
+.seal svg{ width:100%; height:100%; }
+
+.seal-ring{
+    animation:spin 40s linear infinite;
+    transform-origin:110px 110px;
+}
+
+@keyframes spin{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+}
+
+/* ================= STATS STRIP (overlaps hero) ================= */
+
+.stats-strip{
+    max-width:1080px;
+    margin:-52px auto 0;
+    padding:0 24px;
+    position:relative;
+    z-index:2;
+}
+
+.stats-card{
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:var(--bayang-lg);
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+}
+
+.stat{
+    padding:22px 20px;
+    border-right:1px solid #eef0f5;
+}
+
+.stat:last-child{ border-right:none; }
+
+.stat .num{
+    font-family:'Sora', sans-serif;
+    font-size:26px;
+    font-weight:700;
+    color:var(--navy);
+}
+
+.stat .lbl{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:2px;
+}
+
+/* ================= SECTION WRAP ================= */
+
+.section{
+    max-width:1080px;
+    margin:0 auto;
+    padding:80px 24px 0;
+}
+
+.section-head{
+    margin-bottom:32px;
+}
+
+.section-eyebrow{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--kuning-deep);
+    margin-bottom:8px;
+}
+
+.section h2{
+    font-size:28px;
+    margin:0 0 8px;
+    font-weight:700;
+}
+
+.section-sub{
+    color:var(--muted);
+    font-size:15px;
+    max-width:560px;
+}
+
+/* ================= PORTAL CARDS ================= */
+
+.portal-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.portal-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:var(--bayang);
+    text-decoration:none;
+    color:var(--ink);
+    display:block;
+    position:relative;
+    overflow:hidden;
+    border:1px solid transparent;
+    transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.portal-card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--bayang-lg);
+}
+
+.portal-card.pegawai{ border-color:rgba(37,99,235,0.15); }
+.portal-card.pegawai:hover{ border-color:var(--biru); }
+
+.portal-card.guest{ border-color:rgba(250,204,21,0.3); }
+.portal-card.guest:hover{ border-color:var(--kuning-deep); }
+
+.portal-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:18px;
+}
+
+.pegawai .portal-icon{ background:#dbeafe; }
+.guest .portal-icon{ background:#fef9c3; }
+
+.portal-card h3{
+    font-size:19px;
+    margin:0 0 6px;
+}
+
+.portal-card p{
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.55;
+    margin:0 0 18px;
+}
+
+.portal-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.pegawai .portal-tag{ color:var(--biru); }
+.guest .portal-tag{ color:var(--kuning-deep); }
+
+/* ================= FLOW STRIP ================= */
+
+.flow-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:var(--bayang);
+    overflow:hidden;
+}
+
+.flow-step{
+    padding:24px 20px;
+    border-right:1px dashed #e2e5ec;
+    position:relative;
+}
+
+.flow-step:last-child{ border-right:none; }
+
+.flow-num{
+    font-family:'Sora', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:white;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:14px;
+}
+
+.flow-step:nth-child(1) .flow-num{ background:var(--muted); }
+.flow-step:nth-child(2) .flow-num{ background:var(--biru); }
+.flow-step:nth-child(3) .flow-num{ background:var(--kuning-deep); }
+.flow-step:nth-child(4) .flow-num{ background:var(--hijau); }
+
+.flow-step h4{
+    font-size:14.5px;
+    margin:0 0 6px;
+    font-weight:700;
+}
+
+.flow-step p{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:0;
+    line-height:1.5;
+}
+
+/* ================= QUICK LINKS ================= */
+
+.links-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+}
+
+.link-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:18px;
+    box-shadow:var(--bayang);
+    text-decoration:none;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:13.5px;
+    font-weight:600;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.link-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--bayang-lg);
+}
+
+.link-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+.link-card.c1 .link-dot{ background:var(--muted); }
+.link-card.c2 .link-dot{ background:var(--biru); }
+.link-card.c3 .link-dot{ background:var(--kuning-deep); }
+.link-card.c4 .link-dot{ background:var(--hijau); }
+.link-card.c5 .link-dot{ background:var(--biru); }
+.link-card.c6 .link-dot{ background:var(--kuning-deep); }
+
+/* ================= FOOTER ================= */
+
+footer{
+    margin-top:90px;
+    padding:32px 24px 40px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .seal-wrap{ display:none; }
+    .hero h1{ font-size:34px; }
+    .stats-card{ grid-template-columns:repeat(2, 1fr); }
+    .stat:nth-child(2){ border-right:none; }
+    .portal-grid{ grid-template-columns:1fr; }
+    .flow-strip{ grid-template-columns:1fr 1fr; }
+    .flow-step{ border-right:none; border-bottom:1px dashed #e2e5ec; }
+    .links-grid{ grid-template-columns:1fr 1fr; }
+    .section{ padding:64px 20px 0; }
+}
+
+@media (max-width: 480px){
+    .flow-strip{ grid-template-columns:1fr; }
+    .links-grid{ grid-template-columns:1fr; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+    <div class="hero-inner">
+
+        <div class="topline">
+            <div class="brand">
+                <span class="dot"></span>
+                PKPJ SISTEM
+            </div>
+        </div>
+
+        <div class="hero-grid">
+            <div>
+                <span class="eyebrow">Sistem Dalaman</span>
+                <h1>Permohonan stok, <em>diluluskan tanpa kertas</em>, direkodkan setiap langkah.</h1>
+                <p>Satu platform untuk memohon, meluluskan, mengemaskini rekod, dan mengesahkan penerimaan stok pejabat — jelas siapa buat apa, dan bila.</p>
+
+                <div class="hero-cta">
+                    <a href="login-pegawai.html" class="btn btn-primary">Portal Pegawai →</a>
+                    <a href="login-guest.html" class="btn btn-ghost">Mohon sebagai Pemohon</a>
+                </div>
+            </div>
+
+            <div class="seal-wrap">
+                <div class="seal">
+                    <svg viewBox="0 0 220 220" fill="none">
+                        <g class="seal-ring">
+                            <circle cx="110" cy="110" r="98" stroke="rgba(250,204,21,0.35)" stroke-width="1.5" stroke-dasharray="2 6"/>
+                        </g>
+                        <circle cx="110" cy="110" r="78" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                        <circle cx="110" cy="110" r="60" fill="rgba(250,204,21,0.08)" stroke="var(--kuning)" stroke-width="1.5"/>
+                        <path d="M90 112 L104 126 L132 96" stroke="var(--kuning)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <text x="110" y="45" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9" font-family="Inter" letter-spacing="3">PERMOHONAN</text>
+                        <text x="110" y="185" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9" font-family="Inter" letter-spacing="3">STOK RASMI</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= STATS STRIP ================= -->
+<div class="stats-strip">
+    <div class="stats-card">
+        <div class="stat">
+            <div class="num">4</div>
+            <div class="lbl">Peringkat aliran kerja</div>
+        </div>
+        <div class="stat">
+            <div class="num">2</div>
+            <div class="lbl">Jenis portal masuk</div>
+        </div>
+        <div class="stat">
+            <div class="num">100%</div>
+            <div class="lbl">Rekod digital</div>
+        </div>
+        <div class="stat">
+            <div class="num">24/7</div>
+            <div class="lbl">Boleh dimohon bila-bila</div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= PORTAL PILIHAN ================= -->
+<div class="section">
+    <div class="section-head">
+        <div class="section-eyebrow">Mula di sini</div>
+        <h2>Pilih portal anda</h2>
+        <p class="section-sub">Pegawai memerlukan akaun rasmi dengan kata laluan. Pemohon/guest hanya perlu nama untuk terus memohon.</p>
+    </div>
+
+    <div class="portal-grid">
+
+        <a href="login-pegawai.html" class="portal-card pegawai">
+            <div class="portal-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-3.5 3.5-6 8-6s8 2.5 8 6" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>Portal Pegawai</h3>
+            <p>Untuk pelulus dan penyelia stor — luluskan permohonan, kemaskini rekod, dan urus aliran kerja penuh.</p>
+            <span class="portal-tag">Log masuk / Daftar dengan kod pegawai →</span>
+        </a>
+
+        <a href="login-guest.html" class="portal-card guest">
+            <div class="portal-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 19c0-3.3 3.6-5 8-5s8 1.7 8 5M12 12a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>Portal Pemohon</h3>
+            <p>Untuk staf am yang ingin memohon stok. Tiada kata laluan diperlukan — cukup nama dan jawatan.</p>
+            <span class="portal-tag">Masuk dengan nama sahaja →</span>
+        </a>
+
+    </div>
+</div>
+
+<!-- ================= ALIRAN SISTEM ================= -->
+<div class="section">
+    <div class="section-head">
+        <div class="section-eyebrow">Aliran kerja</div>
+        <h2>Dari permohonan ke penerimaan</h2>
+        <p class="section-sub">Setiap permohonan melalui empat peringkat rasmi, masing-masing direkodkan dengan nama, jawatan dan tarikh.</p>
+    </div>
+
+    <div class="flow-strip">
+        <div class="flow-step">
+            <div class="flow-num">1</div>
+            <h4>Permohonan</h4>
+            <p>Pemohon hantar nama item &amp; kuantiti diperlukan.</p>
+        </div>
+        <div class="flow-step">
+            <div class="flow-num">2</div>
+            <h4>Kelulusan</h4>
+            <p>Pelulus sahkan kuantiti diluluskan &amp; catatan.</p>
+        </div>
+        <div class="flow-step">
+            <div class="flow-num">3</div>
+            <h4>Kemaskini Rekod</h4>
+            <p>Stor kemaskini inventori mengikut kelulusan.</p>
+        </div>
+        <div class="flow-step">
+            <div class="flow-num">4</div>
+            <h4>Perakuan Penerimaan</h4>
+            <p>Pemohon sahkan barang telah diterima.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ================= AKSES PANTAS ================= -->
+<div class="section">
+    <div class="section-head">
+        <div class="section-eyebrow">Akses pantas</div>
+        <h2>Semua halaman sistem</h2>
+        <p class="section-sub">Untuk ujian &amp; akses terus tanpa melalui portal.</p>
+    </div>
+
+    <div class="links-grid">
+        <a href="dashboard.html" class="link-card c1">
+            <span class="link-dot"></span> Dashboard
+        </a>
+        <a href="login-pegawai.html" class="link-card c1">
+            <span class="link-dot"></span> Log Masuk Pegawai
+        </a>
+        <a href="login-guest.html" class="link-card c2">
+            <span class="link-dot"></span> Log Masuk Pemohon
+        </a>
+        <a href="permohonan.html" class="link-card c3">
+            <span class="link-dot"></span> Borang Permohonan
+        </a>
+        <a href="kelulusan.html" class="link-card c4">
+            <span class="link-dot"></span> Kelulusan
+        </a>
+        <a href="kemaskini.html" class="link-card c5">
+            <span class="link-dot"></span> Kemaskini Rekod
+        </a>
+        <a href="penerimaan.html" class="link-card c6">
+            <span class="link-dot"></span> Perakuan Penerimaan
+        </a>
+    </div>
+</div>
+
+<footer>
+    PKPJ Sistem Permohonan Stok — dibina untuk kegunaan dalaman pejabat.
+</footer>
+
+</body>
+</html>

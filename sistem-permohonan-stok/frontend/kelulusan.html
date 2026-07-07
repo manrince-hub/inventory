@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<title>Kelulusan Permohonan — PKPJ</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --navy:#0f172a;
+    --navy-light:#1e293b;
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --kuning:#facc15;
+    --kuning-deep:#ca8a04;
+    --biru:#2563eb;
+    --biru-deep:#1d4ed8;
+    --merah:#ef4444;
+    --merah-deep:#dc2626;
+    --hijau:#22c55e;
+    --hijau-deep:#16a34a;
+    --bayang:0 10px 25px rgba(0,0,0,0.08);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    font-family:Inter, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:230px;
+    flex-shrink:0;
+    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+    color:white;
+    padding:24px 16px;
+    display:flex;
+    flex-direction:column;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 8px;
+    margin-bottom:36px;
+}
+
+.brand .dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--kuning);
+    box-shadow:0 0 0 4px rgba(250,204,21,0.2);
+}
+
+.brand span{
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:0.02em;
+}
+
+.nav-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#64748b;
+    padding:0 8px;
+    margin-bottom:8px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:28px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#cbd5e1;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    padding:10px 12px;
+    border-radius:10px;
+    transition:background 0.15s ease, color 0.15s ease;
+}
+
+.nav a svg{ flex-shrink:0; opacity:0.85; }
+
+.nav a:hover{
+    background:rgba(255,255,255,0.06);
+    color:white;
+}
+
+.nav a.active{
+    background:var(--kuning);
+    color:#453800;
+}
+
+.nav a.active svg{ opacity:1; }
+
+.sidebar-footer{
+    margin-top:auto;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.logout-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    background:none;
+    border:none;
+    color:#fca5a5;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.logout-btn:hover{ background:rgba(239,68,68,0.12); }
+
+.user-badge{ position:relative; }
+
+.logout-icon-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    border:none;
+    background:#fee2e2;
+    color:#ef4444;
+    cursor:pointer;
+    flex-shrink:0;
+    margin-left:2px;
+    transition:background 0.15s ease;
+}
+
+.logout-icon-btn:hover{ background:#fecaca; }
+
+
+/* ================= MAIN ================= */
+
+.main{
+    flex:1;
+    padding:28px 36px 60px;
+    max-width:1200px;
+    margin:0 auto;
+    width:100%;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.page-title h1{
+    font-size:22px;
+    margin:0 0 4px;
+    font-weight:800;
+}
+
+.page-title p{
+    margin:0;
+    font-size:13.5px;
+    color:var(--muted);
+}
+
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border-radius:14px;
+    padding:8px 16px 8px 8px;
+    box-shadow:var(--bayang);
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--kuning), var(--kuning-deep));
+    color:#453800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    flex-shrink:0;
+}
+
+.user-meta{ line-height:1.3; }
+
+.user-meta .nama{ font-size:13.5px; font-weight:700; }
+.user-meta .jawatan{ font-size:11.5px; color:var(--muted); }
+
+/* ================= CARDS ================= */
+
+.card{
+    background:var(--card);
+    padding:22px;
+    border-radius:16px;
+    box-shadow:var(--bayang);
+    margin-bottom:16px;
+}
+
+.item-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.item-header strong{ font-size:15.5px; }
+
+.status{
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:700;
+    background:#fef3c7;
+    color:#92400e;
+    white-space:nowrap;
+}
+
+.info{
+    font-size:13.5px;
+    color:var(--muted);
+    margin-top:10px;
+    line-height:1.7;
+    padding:12px 14px;
+    background:#f8fafc;
+    border-radius:10px;
+    border-left:3px solid var(--kuning-deep);
+}
+
+.info strong{ color:var(--text); }
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:16px;
+}
+
+.full{ grid-column:1 / -1; }
+
+label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    margin-bottom:6px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+}
+
+input{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid #e2e5ec;
+    box-sizing:border-box;
+    font-family:inherit;
+    font-size:14px;
+}
+
+input:focus{
+    outline:none;
+    border-color:var(--kuning-deep);
+    box-shadow:0 0 0 3px rgba(202,138,4,0.14);
+}
+
+.btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+}
+
+button.aksi{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14.5px;
+    color:white;
+    transition:background 0.15s ease;
+}
+
+.btn-hijau{ background:var(--hijau); }
+.btn-hijau:hover{ background:var(--hijau-deep); }
+
+.btn-merah{ background:var(--merah); }
+.btn-merah:hover{ background:var(--merah-deep); }
+
+.kosong{
+    text-align:center;
+    color:#9ca3af;
+    padding:50px 20px;
+    font-size:14px;
+}
+
+.kosong svg{ margin-bottom:12px; opacity:0.5; }
+
+.section-head{ margin-bottom:18px; }
+
+.section-head h3{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--kuning-deep);
+    margin:0;
+}
+
+/* ================= ACCESS DENIED PANEL ================= */
+
+.denied-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:20px;
+}
+
+.denied-panel{
+    background:var(--card);
+    max-width:380px;
+    width:100%;
+    padding:32px 28px;
+    border-radius:16px;
+    text-align:center;
+    box-shadow:0 20px 45px rgba(0,0,0,0.25);
+}
+
+.denied-icon{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#fef9c3;
+    color:var(--kuning-deep);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 16px;
+}
+
+.denied-panel h3{
+    margin:0 0 8px;
+    font-size:17px;
+}
+
+.denied-panel p{
+    margin:0 0 22px;
+    font-size:13.5px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+/* From Uiverse.io by alexreyes091 - adapted to kuning theme */
+.btn-kuning{
+    padding:0.85rem 1.8rem;
+    font-weight:700;
+    font-size:14px;
+    font-family:inherit;
+    background:rgb(255, 255, 255);
+    color:var(--kuning-deep);
+    cursor:pointer;
+    border-radius:0.5rem;
+    border-bottom:2px solid var(--kuning-deep);
+    border-right:2px solid var(--kuning-deep);
+    border-top:2px solid white;
+    border-left:2px solid white;
+    transition-duration:0.4s;
+    transition-property:border-top, border-left, border-bottom, border-right, box-shadow;
+}
+
+.btn-kuning:hover{
+    border-top:2px solid var(--kuning-deep);
+    border-left:2px solid var(--kuning-deep);
+    border-bottom:2px solid var(--kuning);
+    border-right:2px solid var(--kuning);
+    box-shadow:rgba(250,204,21,0.4) 5px 5px, rgba(250,204,21,0.3) 10px 10px, rgba(250,204,21,0.2) 15px 15px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px){
+    body{ flex-direction:column; }
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+        flex-direction:row;
+        align-items:center;
+        padding:14px 16px;
+        gap:16px;
+        overflow-x:auto;
+    }
+    .brand{ margin-bottom:0; }
+    .nav-label{ display:none; }
+    .nav{ flex-direction:row; margin-bottom:0; }
+    .sidebar-footer{ display:none; }
+    .main{ padding:20px 16px 40px; }
+    .form-row{ grid-template-columns:1fr; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+
+    <div class="brand">
+        <span class="dot"></span>
+        <span>PKPJ SISTEM</span>
+    </div>
+
+    <div class="nav-label">Menu</div>
+    <div class="nav">
+        <a href="dashboard.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="2"/></svg>
+            Dashboard
+        </a>
+        <a href="index.html" onclick="return confirm('Adakah anda pasti mahu ke Utama? Anda akan meninggalkan halaman ini.')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-7 8 7M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Utama
+        </a>
+        <a href="permohonan.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l2 4H7l2-4zM5 7h14l-1 13a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Permohonan
+        </a>
+        <a href="kelulusan.html" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kelulusan
+        </a>
+        <a href="kemaskini.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 3M12 3a9 9 0 100 18 9 9 0 000-18z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kemaskini
+        </a>
+        <a href="penerimaan.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Penerimaan
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="logout-btn" onclick="doLogout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Log Keluar
+        </button>
+    </div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+
+    <div class="topbar">
+        <div class="page-title">
+            <h1>Kelulusan Permohonan</h1>
+            <p>Semak dan luluskan atau tolak permohonan stok yang menunggu kelulusan.</p>
+        </div>
+
+        <div class="user-badge">
+            <div class="avatar" id="avatar">?</div>
+            <div class="user-meta">
+                <div class="nama" id="userNama">Memuatkan...</div>
+                <div class="jawatan" id="userJawatan">—</div>
+            </div>
+            <button class="logout-icon-btn" onclick="doLogout()" title="Log Keluar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <h3>Menunggu Kelulusan</h3>
+    </div>
+
+    <div id="list"></div>
+
+</div>
+
+<!-- ================= ACCESS DENIED PANEL ================= -->
+<div class="denied-overlay" id="deniedOverlay" style="display:none;">
+    <div class="denied-panel">
+        <div class="denied-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Akses Ditolak</h3>
+        <p>Akaun anda tiada akses ke halaman ini. Hanya pegawai pelulus sahaja yang boleh meluluskan permohonan.</p>
+        <button class="btn-kuning" onclick="window.location.href='dashboard.html'">Kembali ke Dashboard</button>
+    </div>
+</div>
+
+<script>
+
+const API = "http://127.0.0.1:5000";
+
+function initials(nama){
+    if(!nama) return "?";
+    let parts = nama.trim().split(" ");
+    if(parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+async function checkAuth(){
+    try{
+        let res = await fetch(API+"/me", { credentials:"include" });
+        if(!res.ok){ window.location.href = "login-pegawai.html"; return; }
+        let data = await res.json();
+
+        if(data.role !== "pelulus"){
+            document.getElementById("deniedOverlay").style.display = "flex";
+            document.getElementById("userNama").innerText = data.nama_penuh;
+            document.getElementById("userJawatan").innerText = data.jawatan;
+            document.getElementById("avatar").innerText = initials(data.nama_penuh);
+            return;
+        }
+
+        document.getElementById("userNama").innerText = data.nama_penuh;
+        document.getElementById("userJawatan").innerText = data.jawatan;
+        document.getElementById("avatar").innerText = initials(data.nama_penuh);
+
+        load();
+    } catch(err){
+        window.location.href = "login-pegawai.html";
+    }
+}
+
+async function doLogout(){
+    if(!confirm("Adakah anda pasti mahu log keluar?")) return;
+    await fetch(API+"/logout", { method:"POST", credentials:"include" });
+    window.location.href = "login-pegawai.html";
+}
+
+async function load(){
+    try{
+        let res = await fetch(API+"/senarai", { credentials:"include" });
+        if(!res.ok) return;
+        let data = await res.json();
+        let pending = data.filter(d => d.status === "PENDING");
+        renderList(pending);
+    } catch(err){
+        console.error(err);
+    }
+}
+
+function renderList(data){
+
+    if(data.length === 0){
+        document.getElementById("list").innerHTML = `
+        <div class="card kosong">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>Tiada permohonan menunggu kelulusan.</div>
+        </div>`;
+        return;
+    }
+
+    let html = "";
+
+    data.forEach(d=>{
+        html += `
+        <div class="card">
+            <div class="item-header">
+                <strong>#${d.id} — ${d.item_name}</strong>
+                <span class="status">${d.status}</span>
+            </div>
+            <div class="info">
+                Dipohon oleh: <strong>${d.pemohon_nama}</strong> (${d.pemohon_jawatan}) — ${d.pemohon_tarikh}<br>
+                Kuantiti dipesan: <strong>${d.qty_dipesan}</strong>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label>Pegawai Meluluskan</label>
+                    <input id="pegawai_${d.id}" placeholder="Contoh: Bahagian Pentadbiran">
+                </div>
+                <div>
+                    <label>Kuantiti Diluluskan</label>
+                    <input id="qty_${d.id}" type="number" placeholder="Contoh: 8" max="${d.qty_dipesan}">
+                </div>
+
+                <div class="full">
+                    <label>Catatan (wajib jika tolak)</label>
+                    <input id="catatan_${d.id}" placeholder="Catatan tambahan / sebab penolakan">
+                </div>
+
+                <div class="full">
+                    <label>Tarikh</label>
+                    <input id="pelulus_tarikh_${d.id}" type="date">
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="aksi btn-hijau" onclick="proses(${d.id}, 'DILULUSKAN')">Luluskan</button>
+                <button class="aksi btn-merah" onclick="proses(${d.id}, 'DITOLAK')">Tolak</button>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("list").innerHTML = html;
+}
+
+async function proses(id, keputusan){
+
+    let pegawai_meluluskan = document.getElementById("pegawai_"+id).value;
+    let qty_diluluskan = document.getElementById("qty_"+id).value;
+    let catatan = document.getElementById("catatan_"+id).value;
+    let pelulus_tarikh = document.getElementById("pelulus_tarikh_"+id).value;
+
+    if(!pegawai_meluluskan || qty_diluluskan === ""){
+        alert("Sila isi semua ruangan wajib.");
+        return;
+    }
+
+    if(keputusan === "DITOLAK" && !catatan.trim()){
+        alert("Sila nyatakan sebab penolakan dalam ruangan Catatan.");
+        document.getElementById("catatan_"+id).focus();
+        return;
+    }
+
+    if(!confirm(keputusan === "DILULUSKAN" ? "Luluskan permohonan ini?" : "Tolak permohonan ini?")) return;
+
+    try{
+        let res = await fetch(API+"/kelulusan/"+id, {
+            method:"PUT",
+            credentials:"include",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({ pegawai_meluluskan, qty_diluluskan, catatan, pelulus_tarikh, keputusan })
+        });
+
+        if(!res.ok){
+            let data = await res.json();
+            alert(data.message || ("Gagal proses. Status: " + res.status));
+            return;
+        }
+
+        load();
+
+    } catch(err){
+        alert("Ralat sambungan ke server: " + err.message);
+        console.error(err);
+    }
+}
+
+
+// ================= SESI TAMAT AUTOMATIK (tidak aktif) =================
+const HAD_TIDAK_AKTIF_MS = 15 * 60 * 1000; // 15 minit
+let masaTidakAktif;
+
+function tetapkanSemulaTimerSesi(){
+    clearTimeout(masaTidakAktif);
+    masaTidakAktif = setTimeout(async ()=>{
+        alert("Sesi anda telah tamat kerana tidak aktif. Sila log masuk semula.");
+        await fetch(API+"/logout", { method:"POST", credentials:"include" });
+        window.location.href = "index.html";
+    }, HAD_TIDAK_AKTIF_MS);
+}
+
+["click", "keydown", "mousemove", "scroll", "touchstart"].forEach(evt=>{
+    document.addEventListener(evt, tetapkanSemulaTimerSesi, { passive:true });
+});
+
+tetapkanSemulaTimerSesi();
+
+checkAuth();
+
+</script>
+
+</body>
+</html>
